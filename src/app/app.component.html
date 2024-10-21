@@ -1,0 +1,20 @@
+<main class="main">
+  <h1>Weather</h1><br />
+  <h2>{{weatherInfo().title}}</h2>
+  <div class="days">
+    @for (day of weatherInfo().days; track day) {
+    <div class="day">
+      <h3>{{day.day}}</h3>
+      @for (forecast of day.forecasts; track forecast) {
+      <div class="temps">
+        <p class="fixed">{{forecast.time}}</p>
+        <p class="temp">{{forecast.temperature}}°</p>
+        <p>{{forecast.description}}</p>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</main>
+
+<router-outlet />
