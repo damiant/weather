@@ -4,7 +4,7 @@
   <div class="days">
     @for (day of weatherInfo().days; track day) {
     <div class="day">
-      <h3>{{day.day}}</h3>
+      <h2>{{day.day}}</h2>
       @for (forecast of day.forecasts; track forecast) {
       <div class="temps">
         <p class="fixed">{{forecast.time}}</p>

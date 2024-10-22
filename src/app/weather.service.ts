@@ -14,7 +14,7 @@ export class WeatherService {
 
   public async getWeather(zip: number): Promise<WeatherInfo> {
     const location = await this.getLocationForZip(zip, 'US');
-    const forecast = await this.getForecast(location);
+    const forecast = await this.getForecast(location);    
     return {
       title: location.city,
       days: this.mapForecasts(forecast)
@@ -74,7 +74,6 @@ export class WeatherService {
         lon: 0
       }
     }
-
   }
 
   private toTitleCase(str: string) {
