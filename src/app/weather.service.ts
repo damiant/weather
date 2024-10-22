@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WeatherForecast, DaysWeather as DaysWeather, WeatherInfo } from '../models/weather-info';
+import { DaysWeather, WeatherInfo } from '../models/weather-info';
 import { Location } from '../models/location';
 import { WeatherResponse } from '../models/weather-response';
 import { ForecastResponse } from '../models/forecast-response';
@@ -12,7 +12,7 @@ export class WeatherService {
 
   constructor() { }
 
-  public async getWeather(zip: string): Promise<WeatherInfo> {
+  public async getWeather(zip: number): Promise<WeatherInfo> {
     const location = await this.getLocationForZip(zip, 'US');
     const forecast = await this.getForecast(location);
     return {
@@ -34,10 +34,10 @@ export class WeatherService {
       result[result.length - 1].forecasts.push({
         time: this.getFormattedLocalTime(item.dt_txt),
         temperature: Math.round(item.main.temp),
+        icon: item.weather[0].icon,
         description: this.toTitleCase(item.weather[0].description)
       });
     }
-    console.log(result);
     return result;
   }
 
@@ -56,15 +56,25 @@ export class WeatherService {
     return await res.json();
   }
 
-  private async getLocationForZip(zip: string, countryCode: string): Promise<Location> {
+  private async getLocationForZip(zip: number, countryCode: string): Promise<Location> {
     const url = new URL(`https://api.openweathermap.org/data/2.5/weather?zip=${zip},${countryCode}&appid=${this.apiKey}`);
-    const res: Response = await fetch(url);
-    const data: WeatherResponse = await res.json();
-    return {
-      city: data.name,
-      lat: data.coord.lat,
-      lon: data.coord.lon
-    };
+    try {
+      const res: Response = await fetch(url);
+      const data: WeatherResponse = await res.json();
+      return {
+        city: data.name,
+        lat: data.coord.lat,
+        lon: data.coord.lon
+      };
+    } catch (err) {
+      console.error(`Unable to find zip code ${zip}`, err);
+      return {
+        city: 'Unknown',
+        lat: 0,
+        lon: 0
+      }
+    }
+
   }
 
   private toTitleCase(str: string) {

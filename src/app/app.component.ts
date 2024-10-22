@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { WeatherService } from './weather.service';
 import { WeatherInfo } from '../models/weather-info';
@@ -10,11 +10,19 @@ import { WeatherInfo } from '../models/weather-info';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   weatherService = inject(WeatherService);
   weatherInfo = signal<WeatherInfo>({ title: '', days: [] });
+  zipCode: number | undefined;
+  @Input()
+  set zip(id: string) {
+    this.zipCode = parseInt(id);
+    this.update(this.zipCode);
+  }
 
-  async ngOnInit() {
-    this.weatherInfo.set(await this.weatherService.getWeather('94040'));
+
+  async update(zipCode: number | undefined) {
+    if (!zipCode) return;
+    this.weatherInfo.set(await this.weatherService.getWeather(zipCode));
   }
 }

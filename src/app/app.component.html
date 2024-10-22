@@ -1,6 +1,6 @@
 <main class="main">
-  <h1>Weather</h1><br />
-  <h2>{{weatherInfo().title}}</h2>
+  @if (weatherInfo().title) {
+  <h1>{{weatherInfo().title}} Weather</h1>
   <div class="days">
     @for (day of weatherInfo().days; track day) {
     <div class="day">
@@ -9,12 +9,14 @@
       <div class="temps">
         <p class="fixed">{{forecast.time}}</p>
         <p class="temp">{{forecast.temperature}}°</p>
+        <img class="icon" [src]="'https://openweathermap.org/img/wn/'+forecast.icon+'@2x.png'" />
         <p>{{forecast.description}}</p>
       </div>
       }
     </div>
     }
   </div>
+  }
 </main>
 
 <router-outlet />
