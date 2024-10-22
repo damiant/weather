@@ -19,9 +19,12 @@ describe('WeatherService', () => {
   it('Should convert data', () => {
     const expected: DaysWeather =
     {
-      "day": "Monday", "forecasts": [
-        { "time": "6pm", "temperature": 66, "description": "Few Clouds" },
-        { "time": "9pm", "temperature": 70, "description": "Few Clouds" }
+      'day': 'Monday', 'forecasts': [
+        { 'time': '11am', 'temperature': 66, 'description': 'Few Clouds', 'icon': '02d' },
+        { 'time': '2pm', 'temperature': 70, 'description': 'Few Clouds', 'icon': '02d' },
+        { 'time': '5pm', 'temperature': 70, 'description': 'Few Clouds', 'icon': '02d' },
+        { 'time': '8pm', 'temperature': 61, 'description': 'Clear Sky', 'icon': '01n' },
+        { 'time': '11pm', 'temperature': 58, 'description': 'Clear Sky', 'icon': '01n' }
       ]
     };
 

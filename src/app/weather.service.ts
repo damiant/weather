@@ -42,12 +42,12 @@ export class WeatherService {
   }
 
   private getDayName(dt_txt: string): string {
-    const date = new Date(dt_txt);
+    const date = new Date(dt_txt+'Z');
     return date.toLocaleString('default', { weekday: 'long' });
   }
 
   private getFormattedLocalTime(date: string) {
-    return new Date(date).toLocaleString('default', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase().replace(':00', '').replace(' ', '');
+    return new Date(date+'Z').toLocaleString('default', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase().replace(':00', '').replace(' ', '');
   }
 
   private async getForecast(location: Location): Promise<ForecastResponse> {
