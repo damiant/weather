@@ -17,7 +17,7 @@
       <div class="temps">
         <p class="fixed">{{forecast.time}}</p>
         <p class="temp">{{forecast.temperature}}°</p>
-        <img class="icon" [src]="'https://openweathermap.org/img/wn/'+forecast.icon+'@2x.png'" />
+        <img class="icon" [alt]="forecast.description" [src]="'https://openweathermap.org/img/wn/'+forecast.icon+'@2x.png'" />
         <p>{{forecast.description}}</p>
       </div>
       }
