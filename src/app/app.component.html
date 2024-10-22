@@ -1,6 +1,14 @@
 <main class="main">
   @if (weatherInfo().title) {
   <h1>{{weatherInfo().title}} Weather</h1>
+
+
+  <form (ngSubmit)="onSubmit()">
+    <label for="zip">Zip Code</label>
+    <input name="zip" id="zip" required [(ngModel)]="enteredZip" />
+    <button type="submit">Go</button>
+  </form>
+
   <div class="days">
     @for (day of weatherInfo().days; track day) {
     <div class="day">
