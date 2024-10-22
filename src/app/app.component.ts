@@ -15,8 +15,8 @@ export class AppComponent {
   weatherInfo = signal<WeatherInfo>({ title: '', days: [] });
   zipCode: number | undefined;
   @Input()
-  set zip(id: string) {
-    this.zipCode = parseInt(id);
+  set zip(id: string | undefined) {
+    this.zipCode = id ? parseInt(id) : 90210;
     this.update(this.zipCode);
   }
 
