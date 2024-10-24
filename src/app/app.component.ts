@@ -1,5 +1,5 @@
-import { Component, inject, Input, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { WeatherService } from './weather.service';
 import { WeatherInfo } from '../models/weather-info';
 import { FormsModule } from '@angular/forms';
@@ -13,28 +13,36 @@ import { Location } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   weatherService = inject(WeatherService);
   weatherInfo = signal<WeatherInfo>({ title: '', days: [] });
   zipCode: number | undefined;
   enteredZip: string | undefined;
+  router = inject(Router);
   route = inject(ActivatedRoute);
   location = inject(Location);
   @Input()
   set zip(id: string | undefined) {
-    const queryParams = this.route.snapshot.queryParamMap;
-    const zip = queryParams.get('zip');
-    if (zip) {
-      this.zipCode = parseInt(zip);
-      this.update(this.zipCode);
-    } else {
-      this.zipCode = id ? parseInt(id) : 90210;
-      this.update(this.zipCode);
+    this.zipCode = id ? parseInt(id) : 90210;
+    const path = this.location.path();
+    console.log(path);
+    
+  }
+
+  ngOnInit(): void {
+    console.log('ngOnInit', this.location.path());
+    const path = this.location.path().split('=');
+    if (path.length > 1) {
+      this.zipCode = parseInt(path[1]);
+      console.log('zip code is now ', this.zipCode)
     }
+    this.update(this.zipCode);
   }
 
   onSubmit() {
-    this.location.go(`/${this.enteredZip}`);    
+    this.location.go(`/${this.enteredZip}`);
+    this.update(parseInt(this.enteredZip!));
+    //    this.router.navigateByUrl(`/${this.enteredZip}`,{ replaceUrl: true });    
     this.enteredZip = '';
   }
 

@@ -75,7 +75,7 @@ export class WeatherService {
         lon: data.coord.lon
       };
     } catch (err) {
-      console.error(`Unable to find zip code ${zip}`, err);
+      console.error(`Unable to find zip code "${zip}"`, err);
       return {
         city: 'Unknown',
         lat: 0,
