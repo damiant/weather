@@ -56,6 +56,7 @@ export class WeatherService {
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&units=imperial&appid=${this.apiKey}`;
     const res = await this.http.get<ForecastResponse>(url).toPromise();
     return res!;    
+    // Angular makes HttpClient calls server side with SSR turned on. If you use fetch it makes these calls client side.
     // const res: Response = await fetch(url);
     // return await res.json();
   }
