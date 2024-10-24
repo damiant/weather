@@ -7,5 +7,5 @@ publish = "dist/weather/browser"
   package = "@netlify/angular-runtime"
 
 [[edge_functions]]
-path = "angular-ssr"
+path = "/angular-ssr"
 function = "angular-ssr"
