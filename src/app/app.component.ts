@@ -1,8 +1,10 @@
 import { Component, inject, Input, signal } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { WeatherService } from './weather.service';
 import { WeatherInfo } from '../models/weather-info';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -16,16 +18,23 @@ export class AppComponent {
   weatherInfo = signal<WeatherInfo>({ title: '', days: [] });
   zipCode: number | undefined;
   enteredZip: string | undefined;
-  router = inject(Router);
+  route = inject(ActivatedRoute);
+  location = inject(Location);
   @Input()
   set zip(id: string | undefined) {
-    this.zipCode = id ? parseInt(id) : 90210;
-    this.update(this.zipCode);
+    const queryParams = this.route.snapshot.queryParamMap;
+    const zip = queryParams.get('zip');
+    if (zip) {
+      this.zipCode = parseInt(zip);
+      this.update(this.zipCode);
+    } else {
+      this.zipCode = id ? parseInt(id) : 90210;
+      this.update(this.zipCode);
+    }
   }
 
-
   onSubmit() {
-    this.router.navigateByUrl(`/${this.enteredZip}`,{ replaceUrl: true });
+    this.location.go(`/${this.enteredZip}`);    
     this.enteredZip = '';
   }
 
