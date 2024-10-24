@@ -24,17 +24,12 @@ export class AppComponent implements OnInit {
   @Input()
   set zip(id: string | undefined) {
     this.zipCode = id ? parseInt(id) : 90210;
-    const path = this.location.path();
-    console.log(path);
-    
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit', this.location.path());
     const path = this.location.path().split('=');
     if (path.length > 1) {
       this.zipCode = parseInt(path[1]);
-      console.log('zip code is now ', this.zipCode)
     }
     this.update(this.zipCode);
   }
@@ -42,7 +37,6 @@ export class AppComponent implements OnInit {
   onSubmit() {
     this.location.go(`/${this.enteredZip}`);
     this.update(parseInt(this.enteredZip!));
-    //    this.router.navigateByUrl(`/${this.enteredZip}`,{ replaceUrl: true });    
     this.enteredZip = '';
   }
 
