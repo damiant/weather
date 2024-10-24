@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DaysWeather, WeatherInfo } from '../models/weather-info';
 import { Location } from '../models/location';
 import { WeatherResponse } from '../models/weather-response';
 import { ForecastResponse } from '../models/forecast-response';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
   apiKey = `d2aee13bbfaa348b319c282b272d9098`;
+  http = inject(HttpClient);
 
   constructor() { }
 
@@ -52,15 +54,20 @@ export class WeatherService {
 
   private async getForecast(location: Location): Promise<ForecastResponse> {
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&units=imperial&appid=${this.apiKey}`;
-    const res: Response = await fetch(url);
-    return await res.json();
+    const res = await this.http.get<ForecastResponse>(url).toPromise();
+    return res!;    
+    // const res: Response = await fetch(url);
+    // return await res.json();
   }
 
   private async getLocationForZip(zip: number, countryCode: string): Promise<Location> {
-    const url = new URL(`https://api.openweathermap.org/data/2.5/weather?zip=${zip},${countryCode}&appid=${this.apiKey}`);
+    const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},${countryCode}&appid=${this.apiKey}`;
     try {
-      const res: Response = await fetch(url);
-      const data: WeatherResponse = await res.json();
+      // const res: Response = await fetch(url);
+      // const data: WeatherResponse = await res.json();
+      const data = await this.http.get<WeatherResponse>(url).toPromise();
+      if (!data) throw new Error('failed');      
+  
       return {
         city: data.name,
         lat: data.coord.lat,
